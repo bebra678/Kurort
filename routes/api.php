@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,8 +13,16 @@ use App\Http\Controllers\SupportController;
 //    return $request->user();
 //});
 
-Route::post('register/email', [RegisterController::class, 'registerEmail']);
-Route::post('register/number', [RegisterController::class, 'registerNumber']);
+//Route::post('register/email', [RegisterController::class, 'registerEmail']);
+//Route::post('register/number', [RegisterController::class, 'registerNumber']);
+
+Route::post('/register', [RegisterController::class, 'register']);
+
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->name('verification.verify');
+
+Route::post('/email/resend', [VerificationController::class, 'resend'])
+    ->name('verification.resend');
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
@@ -23,15 +32,17 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 });
 
 Route::group(['middleware' => 'user_auth'], function ($router) {
-    Route::put('update', [UserController::class, 'update']);
-    Route::post('review', [UserController::class, 'review']);
-    Route::post('favorite', [UserController::class, 'favorite']);
-    Route::get('favorites', [UserController::class, 'indexFavorite']);
-    Route::get('reviews', [UserController::class, 'indexReview']);
-    Route::post('upload/photo', [UserController::class, 'uploadPhoto']);
-    Route::get('user/photo', [UserController::class, 'photo']);
-    Route::get('user', [UserController::class, 'user']);
-    Route::post('support/create', [SupportController::class, 'create']);
+    Route::group(['middleware' => 'verify'], function ($router) {
+        Route::put('update', [UserController::class, 'update']);
+        Route::post('review', [UserController::class, 'review']);
+        Route::post('favorite', [UserController::class, 'favorite']);
+        Route::get('favorites', [UserController::class, 'indexFavorite']);
+        Route::get('reviews', [UserController::class, 'indexReview']);
+        Route::post('upload/photo', [UserController::class, 'uploadPhoto']);
+        Route::get('user/photo', [UserController::class, 'photo']);
+        Route::get('user', [UserController::class, 'user']);
+        Route::post('support/create', [SupportController::class, 'create']);
+    });
 });
 
 Route::get('cards', [CardController::class, 'index']);

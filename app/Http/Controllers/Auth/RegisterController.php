@@ -3,26 +3,84 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegEmailRequest;
-use App\Http\Requests\RegNumberRequest;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserRequest;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
-    public function registerEmail(RegEmailRequest $request)
+    /*
+    |--------------------------------------------------------------------------
+    | Register Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles the registration of new users as well as their
+    | validation and creation. By default this controller uses a trait to
+    | provide this functionality without requiring any additional code.
+    |
+    */
+
+    use RegistersUsers;
+
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/home';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        $data = $request->validated();
-        User::firstOrCreate($data);
-        return response()->json($data);
+        $this->middleware('guest');
     }
 
-    public function registerNumber(RegNumberRequest $request)
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
     {
-        $data = $request->validated();
-        User::firstOrCreate($data);
-        return response()->json($data);
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:30', 'min:2', 'regex:/^[А-Я][\p{Cyrillic}-]+$/u'],
+            'email' => ['nullable', 'string', 'email', 'min:10','max:100', Rule::unique('users')],
+            'password' => ['required', 'string', 'max:100', 'min:6'],
+        ]);
+    }
+
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\Models\User
+     */
+    protected function create(array $data)
+    {
+        $user = User::firstOrCreate($data);
+
+        $user->sendEmailVerificationNotification();
+
+        return $user;
+    }
+
+    public function register(UserRequest $request)
+    {
+        //$this->validator($request->all())->validate();
+        $request->validated();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return response()->json(['user' => $user], 201);
     }
 }
