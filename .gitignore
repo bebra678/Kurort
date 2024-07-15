@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 public_html
 /mock
+/app/Http/Controllers/UserController.php
+/app/Http/Controllers/CardController.php
