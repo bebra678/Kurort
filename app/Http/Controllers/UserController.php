@@ -6,9 +6,16 @@ use App\Http\Requests\FavoriteRequest;
 use App\Http\Requests\PhotoRequest;
 use App\Http\Requests\ReviewRequest;
 use App\Http\Requests\UserRequest;
+use App\Models\Attraction;
 use App\Models\Card;
+use App\Models\Categorie;
 use App\Models\Favorite;
+use App\Models\Food;
+use App\Models\Poster;
+use App\Models\Reaction;
 use App\Models\Review;
+use App\Models\Router;
+use App\Models\Shoping;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,13 +26,17 @@ class UserController extends Controller
     public function user()
     {
         $user = Auth::user();
-        $user['photo'] = 'http/user/photo';
+        $user['photo'] = 'https://kurort26-api.ru/api/user/photo';
         return response()->json($user);
     }
 
     public function photo()
     {
         $user = Auth::user();
+        if(!$user['photo'])
+        {
+            return response()->file(Storage::path('public/user/empty_profile_avatar.png'));
+        }
         return response()->file(Storage::path('public/' . $user['photo']));
     }
 
@@ -39,7 +50,7 @@ class UserController extends Controller
         }
         Storage::disk('public')->put('user/', $request['photo']);
         $user->save();
-        return response()->json($user['photo']);
+        return response()->json(['photo' => 'https://kurort26-api.ru/api/user/photo']);
     }
 
     public function update(UserRequest $request)
@@ -51,20 +62,40 @@ class UserController extends Controller
         return response()->json([$data]);
     }
 
-    public function review(ReviewRequest $request)
+    public function review(ReviewRequest $request) //надо переделать
     {
         $data = $request->validated();
-        //$card = Card::find($data['card_id']);
-        $card = Card::where('id', $data['card_id'])->exists();
-        if(!$card)
-        {
-            return response()->json(['error' => 'Такой карточки не сущевствует'], 404);
-        }
-        $array = Review::where('user_id', Auth::id())->where('card_id', $data['card_id'])->exists();
+        $array = Review::where('user_id', Auth::id())->where('card_id', $data['card_id'])->where('category_id', $data['category_id'])->exists();
         if($array)
         {
             return response()->json(['error' => 'Тут вы уже оставили отзыв'], 403);
         }
+        if($data['category_id'] == 1)
+        {
+            $card = Food::find($data['card_id']);
+        }
+        elseif($data['category_id'] == 2)
+        {
+            $card = Poster::find($data['card_id']);
+        }
+        elseif($data['category_id'] == 3)
+        {
+            $card = Attraction::find($data['card_id']);
+        }
+        elseif($data['category_id'] == 4)
+        {
+            $card = Shoping::find($data['card_id']);
+        }
+        elseif($data['category_id'] == 5)
+        {
+            $card = Router::find($data['card_id']);
+        }
+        if(!$card)
+        {
+            return response()->json(['error' => 'Такой карточки не сущевствует'], 404);
+        }
+        $user = Auth::user();
+        $data['name'] = $user['name'];
         $data['user_id'] = Auth::id();
         Review::firstOrCreate($data);
         return response()->json($data);
@@ -73,13 +104,35 @@ class UserController extends Controller
     public function favorite(FavoriteRequest $request)
     {
         $data = $request->validated();
-        //$card = Card::find($data['card_id']);
-        $card = Card::where('id', $data['card_id'])->exists();
+        if($data['category_id'] == 1)
+        {
+            $card = Food::find($data['card_id']);
+        }
+        elseif($data['category_id'] == 2)
+        {
+            $card = Poster::find($data['card_id']);
+        }
+        elseif($data['category_id'] == 3)
+        {
+            $card = Attraction::find($data['card_id']);
+        }
+        elseif($data['category_id'] == 4)
+        {
+            $card = Shoping::find($data['card_id']);
+        }
+        elseif($data['category_id'] == 5)
+        {
+            $card = Router::find($data['card_id']);
+        }
+        else
+        {
+            return response()->json(['error' => 'Такой категирии не существует'], 404);
+        }
         if(!$card)
         {
             return response()->json(['error' => 'Такой карточки не сущевствует'], 404);
         }
-        $array = Favorite::where('user_id', Auth::id())->where('card_id', $data['card_id'])->exists();
+        $array = Favorite::where('user_id', Auth::id())->where('card_id', $data['card_id'])->where('category_id', $data['category_id'])->exists();
         if($array)
         {
             return response()->json(['error' => 'Эту карточку вы уже добавили в избранное'], 403);

@@ -18,8 +18,9 @@ class ReviewRequest extends FormRequest
     {
         return [
             'card_id' => ['required', 'integer', 'max:11'],
-            'comment' => ['required', 'string', 'max:240', 'min:3'],
+            'text' => ['required', 'string', 'max:240', 'min:3'],
             'rating' => ['required', 'integer', 'between:1,5'],
+            'category_id' => ['required', 'integer', 'max:11'],
         ];
     }
 
@@ -31,7 +32,12 @@ class ReviewRequest extends FormRequest
                 'max' => 'Максимально допустимое значение: 11',
                 'integer' => 'Ошибка! Передаваемое значение id_card должно быть integer'
             ],
-            'comment' => [
+            'category_id' => [
+                'required' => 'Ошибка! Нет id категирии',
+                'max' => 'Максимально допустимое значение: 11',
+                'integer' => 'Ошибка! Передаваемое значение category_id должно быть integer'
+            ],
+            'text' => [
                 'required' => 'Поле не должно быть пустым',
                 'max' => 'Максимально допустимое значение: 240',
                 'min' => 'Минимальное допустимое значение: 3',

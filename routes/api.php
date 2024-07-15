@@ -13,10 +13,10 @@ use App\Http\Controllers\SupportController;
 //    return $request->user();
 //});
 
-//Route::post('register/email', [RegisterController::class, 'registerEmail']);
+Route::post('register/email', [RegisterController::class, 'register']);
 //Route::post('register/number', [RegisterController::class, 'registerNumber']);
 
-Route::post('/register', [RegisterController::class, 'register']);
+//Route::post('/register', [RegisterController::class, 'register']);
 
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
     ->name('verification.verify');
@@ -42,14 +42,24 @@ Route::group(['middleware' => 'user_auth'], function ($router) {
         Route::get('user/photo', [UserController::class, 'photo']);
         Route::get('user', [UserController::class, 'user']);
         Route::post('support/create', [SupportController::class, 'create']);
+        Route::post('reaction', [CardController::class, 'reaction']);
     });
 });
 
-Route::get('cards', [CardController::class, 'index']);
-Route::get('cards/{id}', [CardController::class, 'show']);
-Route::get('cards/category/{id}', [CardController::class, 'showIndex']);
-Route::get('cards/photo/{id}/{page}', [CardController::class, 'photo']);
+Route::get('cards/photo/{cat_id}/{id}/{page}', [CardController::class, 'photo']);
 
+Route::get('cards/attractions', [CardController::class, 'indexAttractions']);
+Route::get('cards/attractions/{id}', [CardController::class, 'showAttractions']);
 
+Route::get('cards/foods', [CardController::class, 'indexFoods']);
+Route::get('cards/foods/{id}', [CardController::class, 'showFoods']);
 
+Route::get('cards/routers', [CardController::class, 'indexRouters']);
+Route::get('cards/routers/{id}', [CardController::class, 'showRouters']);
+
+Route::get('cards/shopings', [CardController::class, 'indexShopings']);
+Route::get('cards/shopings/{id}', [CardController::class, 'showFoods']);
+
+Route::get('cards/posters', [CardController::class, 'indexPosters']);
+Route::get('cards/posters/{id}', [CardController::class, 'showPosters']);
 

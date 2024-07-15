@@ -5,13 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Favorite extends Model
+class Citie extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'user_id',
-        'card_id',
-        'category_id',
-    ];
 }

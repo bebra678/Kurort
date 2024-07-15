@@ -17,6 +17,7 @@ class FavoriteRequest extends FormRequest
     {
         return [
             'card_id' => ['required', 'integer', 'max:11'],
+            'category_id' => ['required', 'integer', 'max:11'],
         ];
     }
 
@@ -27,6 +28,11 @@ class FavoriteRequest extends FormRequest
                 'required' => 'Ошибка! Нет id карточки',
                 'max' => 'Максимально допустимое значение: 11',
                 'integer' => 'Ошибка! Передаваемое значение id_card должно быть integer'
+            ],
+            'category_id' => [
+                'required' => 'Ошибка! Нет id категирии',
+                'max' => 'Максимально допустимое значение: 11',
+                'integer' => 'Ошибка! Передаваемое значение category_id должно быть integer'
             ],
         ];
     }

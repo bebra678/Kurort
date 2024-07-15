@@ -17,7 +17,7 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => ['required', 'string', 'max:30', 'min:2', 'regex:/^[А-Я][\p{Cyrillic}-]+$/u'],
+            'name' => ['required', 'string', 'max:30', 'min:2', 'regex:/^[\p{Cyrillic}-]+$/u'],
             'email' => ['nullable', 'string', 'email', 'min:10','max:100', Rule::unique('users')],
             'password' => ['required', 'string', 'max:100', 'min:6'],
             'number' => ['nullable', 'regex:/^[\+7] \(\d{3}\) \d{3}-\d{2}-\d{2}$/', Rule::unique('users')],
@@ -29,7 +29,7 @@ class UserRequest extends FormRequest
                 return $rules;
             case 'PUT':
                 return [
-                    'name' => ['nullable', 'string', 'max:30', 'min:2', 'regex:/^[А-Я][\p{Cyrillic}-]+$/u'],
+                    'name' => ['nullable', 'string', 'max:30', 'min:2', 'regex:/^[\p{Cyrillic}-]+$/u'],
                     'email' => ['nullable', 'string', 'email', 'min:10','max:100', Rule::unique('users')->ignore($this->email, 'email')],
                     'number' => ['nullable', 'regex:/^[\+7] \(\d{3}\) \d{3}-\d{2}-\d{2}$/', Rule::unique('users')->ignore($this->number, 'number')],
                 ];
