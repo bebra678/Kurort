@@ -6,6 +6,7 @@ use App\Http\Requests\ReactionRequest;
 use App\Http\Resources\AttractionsResource;
 use App\Http\Resources\FoodsResource;
 use App\Http\Resources\RoutersResource;
+use App\Models\Allimage;
 use App\Models\Attraction;
 use App\Models\Card;
 use App\Models\Citie;
@@ -45,7 +46,7 @@ class CardController extends Controller
         $data = Attraction::find($id);
         if(!$data)
         {
-            return response()->json(['error' => 'Такой карточки не существует'], 404);
+            return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
         $city = Citie::find($id)->first();
         $data['city'] = $city['name'];
@@ -53,7 +54,7 @@ class CardController extends Controller
         $data['type'] = $type['name'];
         $imageUrl = $this->searchImages($id, $data['category_id']);
         $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
     }
 
     public function indexFoods()
@@ -67,11 +68,11 @@ class CardController extends Controller
         $data = Food::find($id);
         if(!$data)
         {
-            return response()->json(['error' => 'Такой карточки не существует'], 404);
+            return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
         $imageUrl = $this->searchImages($id, $data['category_id']);
         $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
     }
 
     public function indexRouters()
@@ -85,11 +86,11 @@ class CardController extends Controller
         $data = Router::find($id);
         if(!$data)
         {
-            return response()->json(['error' => 'Такой карточки не существует'], 404);
+            return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
         $imageUrl = $this->searchImages($id, $data['category_id']);
         $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
     }
 
     public function indexShopings()
@@ -103,11 +104,11 @@ class CardController extends Controller
         $data = Shoping::find($id);
         if(!$data)
         {
-            return response()->json(['error' => 'Такой карточки не существует'], 404);
+            return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
         $imageUrl = $this->searchImages($id, $data['category_id']);
         $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
     }
 
     public function indexPosters()
@@ -121,11 +122,11 @@ class CardController extends Controller
         $data = Poster::find($id);
         if(!$data)
         {
-            return response()->json(['error' => 'Такой карточки не существует'], 404);
+            return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
         $imageUrl = $this->searchImages($id, $data['category_id']);
         $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
     }
 
     public function searchImages(string $id, string $category_id)
@@ -158,21 +159,14 @@ class CardController extends Controller
         $data = Image::where('card_id', $id)->where('page', $page)->where('category_id', $cat_id)->first();
         if(!$data)
         {
-            return response()->json(['error' => 'Изображение не найдено'], 404);
+            return response()->json(['success' => false, 'error' => 'Изображение не найдено']);
         }
         return response()->file(Storage::path('public/images/' . $data['name']));
     }
 
-    public function photo(string $name)
+    public function photo()
     {
-        if (Storage::exists('public/all/' . $name))
-        {
-            return response()->file(Storage::path('public/all/' . $name));
-        }
-        else
-        {
-            return response()->json(['error' => 'Изображение не найдено'], 404);
-        }
+        return Allimage::all();
     }
 
     public function reaction(ReactionRequest $request)

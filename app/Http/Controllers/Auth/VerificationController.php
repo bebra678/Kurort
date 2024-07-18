@@ -49,11 +49,11 @@ class VerificationController extends Controller
         $user = User::where('email', $request->email)->first();
         if (!$user)
         {
-            return response()->json(['error' => 'Пользователь не найден'], 404);
+            return response()->json(['success' => false, 'error' => 'Пользователь не найден']);
         }
         if($user->email_verified_at)
         {
-            return response()->json(['error' => 'Вы уже подтвердили свою почту'], 404);
+            return response()->json(['success' => false, 'error' => 'Вы уже подтвердили свою почту']);
         }
         //$verificationCode = Str::random(6);
         $verificationCode = mt_rand(100000, 999999);
@@ -62,7 +62,7 @@ class VerificationController extends Controller
         Mail::raw('Ваш код подтверждения: ' . $verificationCode, function ($message) use ($user) {
             $message->to($user->email)->subject('Код подтверждения');
         });
-        return response()->json(['message' => 'Код подтверждения отправлен на вашу почту']);
+        return response()->json(['success' => true, 'message' => 'Код подтверждения отправлен на вашу почту']);
     }
 
     public function verifyCode(Request $request)
@@ -70,23 +70,25 @@ class VerificationController extends Controller
         $user = User::where('email', $request->email)->first();
         if (!$user)
         {
-            return response()->json(['message' => 'Пользователь не найден'], 404);
+            return response()->json(['success' => false, 'error' => 'Пользователь не найден']);
         }
         if($user->email_verified_at)
         {
-            return response()->json(['error' => 'Вы уже подтвердили свою почту'], 404);
+            return response()->json(['success' => false, 'error' => 'Вы уже подтвердили свою почту']);
         }
         if ($user->verification_code === $request->code)
         {
             $user->verification_code = null;
             $user->email_verified_at = now();
             $user->save();
-
-            return response()->json(['message' => 'Вы успешно подтвердили свою почту!']);
+            Mail::raw( $user->name .', Вы успешно подтвердили свою почту!', function ($message) use ($user) {
+                $message->to($user->email)->subject('Поздравляем с успешной регистрацией');
+            });
+            return response()->json(['success' => true, 'message' => 'Вы успешно подтвердили свою почту!']);
         }
         else
         {
-            return response()->json(['error' => 'Неверный код подтверждения'], 400);
+            return response()->json(['success' => false, 'error' => 'Неверный код подтверждения']);
         }
     }
 

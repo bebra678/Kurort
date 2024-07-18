@@ -59,7 +59,7 @@ class UserController extends Controller
         $data = User::find(Auth::id());
         $data->fill($request->except(['id']));
         $data->save();
-        return response()->json([$data]);
+        return response()->json($data);
     }
 
     public function review(ReviewRequest $request) //надо переделать
@@ -68,7 +68,7 @@ class UserController extends Controller
         $array = Review::where('user_id', Auth::id())->where('card_id', $data['card_id'])->where('category_id', $data['category_id'])->exists();
         if($array)
         {
-            return response()->json(['error' => 'Тут вы уже оставили отзыв'], 403);
+            return response()->json(['success' => false, 'error' => 'Тут вы уже оставили отзыв']);
         }
         if($data['category_id'] == 1)
         {
@@ -92,13 +92,13 @@ class UserController extends Controller
         }
         if(!$card)
         {
-            return response()->json(['error' => 'Такой карточки не сущевствует'], 404);
+            return response()->json(['success' => false, 'error' => 'Такой карточки не сущевствует']);
         }
         $user = Auth::user();
         $data['name'] = $user['name'];
         $data['user_id'] = Auth::id();
         Review::firstOrCreate($data);
-        return response()->json($data);
+        return response()->json(['success' => true, 'data' => $data]);
     }
 
     public function favorite(FavoriteRequest $request)
@@ -126,20 +126,20 @@ class UserController extends Controller
         }
         else
         {
-            return response()->json(['error' => 'Такой категирии не существует'], 404);
+            return response()->json(['success' => false, 'error' => 'Такой категирии не существует']);
         }
         if(!$card)
         {
-            return response()->json(['error' => 'Такой карточки не сущевствует'], 404);
+            return response()->json(['success' => false, 'error' => 'Такой карточки не сущевствует']);
         }
         $array = Favorite::where('user_id', Auth::id())->where('card_id', $data['card_id'])->where('category_id', $data['category_id'])->exists();
         if($array)
         {
-            return response()->json(['error' => 'Эту карточку вы уже добавили в избранное'], 403);
+            return response()->json(['success' => false, 'error' => 'Эту карточку вы уже добавили в избранное']);
         }
         $data['user_id'] = Auth::id();
         Favorite::firstOrCreate($data);
-        return response()->json($data);
+        return response()->json(['success' => true, 'data' => $data]);
     }
 
     public function indexFavorite()
@@ -147,9 +147,9 @@ class UserController extends Controller
         $data = Favorite::where('user_id', Auth::id())->get();
         if(!$data)
         {
-            return response()->json(['error' => 'Список пуст'], 204);
+            return response()->json(['success' => false, 'error' => 'Список пуст']);
         }
-        return response()->json($data);
+        return response()->json(['success' => true, 'data' => $data]);
     }
 
     public function indexReview()
@@ -157,8 +157,8 @@ class UserController extends Controller
         $data = Review::where('user_id', Auth::id())->get();
         if(!$data)
         {
-            return response()->json(['error' => 'Список пуст'], 204);
+            return response()->json(['success' => false, 'error' => 'Список пуст']);
         }
-        return response()->json($data);
+        return response()->json(['success' => true, 'data' =>$data]);
     }
 }

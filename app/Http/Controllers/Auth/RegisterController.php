@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class RegisterController extends Controller
 {
@@ -85,11 +86,9 @@ class RegisterController extends Controller
 
     public function register(UserRequest $request)
     {
-        //$this->validator($request->all())->validate();
         $request->validated();
-
         event(new Registered($user = $this->create($request->all())));
-
-        return response()->json(['user' => $user], 201);
+        $token = JWTAuth::fromUser($user);
+        return response()->json(['success' => true, 'access_token' => $token, 'user' => $user]);
     }
 }

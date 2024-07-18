@@ -27,7 +27,7 @@ class AuthController extends Controller
         $credentials = request([$this->username(), 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Ошибка авторизации'], 401);
+            return response()->json(['success' => false, 'error' => 'Ошибка авторизации']);
         }
 
         return $this->respondWithToken($token);
@@ -77,7 +77,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 525600
         ]);
     }
 
