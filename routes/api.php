@@ -9,20 +9,17 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\SupportController;
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::post('register/email', [RegisterController::class, 'register']);
 //Route::post('register/number', [RegisterController::class, 'registerNumber']);
 
-//Route::post('/register', [RegisterController::class, 'register']);
+//Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+//    ->name('verification.verify');
+//
+//Route::post('/email/resend', [VerificationController::class, 'resend'])
+//    ->name('verification.resend');
 
-Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-    ->name('verification.verify');
-
-Route::post('/email/resend', [VerificationController::class, 'resend'])
-    ->name('verification.resend');
+Route::post('/send-verification-code', [VerificationController::class, 'sendVerificationCode']);
+Route::post('/verify-code', [VerificationController::class, 'verifyCode']);
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
@@ -46,7 +43,8 @@ Route::group(['middleware' => 'user_auth'], function ($router) {
     });
 });
 
-Route::get('cards/photo/{cat_id}/{id}/{page}', [CardController::class, 'photo']);
+Route::get('cards/photo/{cat_id}/{id}/{page}', [CardController::class, 'photoCards']);
+Route::get('/photo/{name}', [CardController::class, 'photo']); //новое
 
 Route::get('cards/attractions', [CardController::class, 'indexAttractions']);
 Route::get('cards/attractions/{id}', [CardController::class, 'showAttractions']);
@@ -58,7 +56,7 @@ Route::get('cards/routers', [CardController::class, 'indexRouters']);
 Route::get('cards/routers/{id}', [CardController::class, 'showRouters']);
 
 Route::get('cards/shopings', [CardController::class, 'indexShopings']);
-Route::get('cards/shopings/{id}', [CardController::class, 'showFoods']);
+Route::get('cards/shopings/{id}', [CardController::class, 'showShopings']);
 
 Route::get('cards/posters', [CardController::class, 'indexPosters']);
 Route::get('cards/posters/{id}', [CardController::class, 'showPosters']);

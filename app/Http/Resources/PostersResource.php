@@ -36,6 +36,7 @@ class PostersResource extends JsonResource
             $isFavorite = false;
         }
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'type' => $type,
             'city' => $city,
@@ -45,7 +46,7 @@ class PostersResource extends JsonResource
             'voted' => $voted,
             'weekWork' => $this->weekWork,
             'isFavorite' => $isFavorite,
-            'imageUrl' => 'http://127.0.0.1:8000/api/cards/photo/' . $this->category_id . '/' . $this->id . '/' . 1,
+            'imageUrl' => 'https://kurort26-api.ru/api/cards/photo/' . $this->category_id . '/' . $this->id . '/' . 1,
         ];
     }
 }
