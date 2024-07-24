@@ -44,20 +44,25 @@ Route::group(['middleware' => 'user_auth'], function ($router) {
 });
 
 Route::get('cards/photo/{cat_id}/{id}/{page}', [CardController::class, 'photoCards']);
-Route::get('/images', [CardController::class, 'photo']);
+Route::get('/images', [CardController::class, 'imagesAll']);
 
 Route::get('cards/attractions', [CardController::class, 'indexAttractions']);
+Route::get('cards/all/attractions', [CardController::class, 'indexAllAttractions']);
 Route::get('cards/attractions/{id}', [CardController::class, 'showAttractions']);
 
 Route::get('cards/foods', [CardController::class, 'indexFoods']);
+Route::get('cards/all/foods', [CardController::class, 'indexAllFoods']);
 Route::get('cards/foods/{id}', [CardController::class, 'showFoods']);
 
 Route::get('cards/routers', [CardController::class, 'indexRouters']);
+Route::get('cards/all/routers', [CardController::class, 'indexAllRouters']);
 Route::get('cards/routers/{id}', [CardController::class, 'showRouters']);
 
 Route::get('cards/shopings', [CardController::class, 'indexShopings']);
+Route::get('cards/all/shopings', [CardController::class, 'indexAllShopings']);
 Route::get('cards/shopings/{id}', [CardController::class, 'showShopings']);
 
 Route::get('cards/posters', [CardController::class, 'indexPosters']);
+Route::get('cards/all/posters', [CardController::class, 'indexAllPosters']);
 Route::get('cards/posters/{id}', [CardController::class, 'showPosters']);
 

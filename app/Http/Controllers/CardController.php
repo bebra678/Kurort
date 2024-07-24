@@ -41,6 +41,11 @@ class CardController extends Controller
         return AttractionsResource::collection($data);
     }
 
+    public function indexAllAttractions()
+    {
+        return response()->json(Attraction::all());
+    }
+
     public function showAttractions(string $id)
     {
         $data = Attraction::find($id);
@@ -63,6 +68,11 @@ class CardController extends Controller
         return FoodsResource::collection($data);
     }
 
+    public function indexAllFoods()
+    {
+        return response()->json(Food::all());
+    }
+
     public function showFoods(string $id)
     {
         $data = Food::find($id);
@@ -79,6 +89,11 @@ class CardController extends Controller
     {
         $data = Router::all();
         return RoutersResource::collection($data);
+    }
+
+    public function indexAllRouters()
+    {
+        return response()->json(Router::all());
     }
 
     public function showRouters(string $id)
@@ -99,6 +114,11 @@ class CardController extends Controller
         return AttractionsResource::collection($data);
     }
 
+    public function indexAllShopings()
+    {
+        return response()->json(Shoping::all());
+    }
+
     public function showShopings(string $id)
     {
         $data = Shoping::find($id);
@@ -115,6 +135,11 @@ class CardController extends Controller
     {
         $data = Poster::all();
         return AttractionsResource::collection($data);
+    }
+
+    public function indexAllPosters()
+    {
+        return response()->json(Poster::all());
     }
 
     public function showPosters(string $id)
@@ -164,9 +189,9 @@ class CardController extends Controller
         return response()->file(Storage::path('public/images/' . $data['name']));
     }
 
-    public function photo()
+    public function imagesAll()
     {
-        return Allimage::all();
+        return response()->json(Allimage::all());
     }
 
     public function reaction(ReactionRequest $request)
