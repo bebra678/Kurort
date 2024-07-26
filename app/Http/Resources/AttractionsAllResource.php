@@ -2,8 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\CardController;
 use App\Models\Citie;
 use App\Models\Favorite;
+use App\Models\Image;
+use App\Models\Reactionsimage;
 use App\Models\Review;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -35,6 +38,16 @@ class AttractionsAllResource extends JsonResource
         {
             $isFavorite = false;
         }
+        $images = Image::where('card_id', $this->id)->where('category_id', $this->category_id)->where('page', 1)->get();
+//        $images['path'] = 'https://kurort26-api.ru/images/' . $images->name;
+//        $images['likes'] = Reactionsimage::where('img_id', $images['id'])->where('type', 1)->count();
+//        $images['dislikes'] = Reactionsimage::where('img_id', $images['id'])->where('type', 2)->count();
+        foreach ($images as $img)
+        {
+            $img['path'] = 'https://kurort26-api.ru/images/' . $img['name'];
+            $img['likes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 1)->count();
+            $img['dislikes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 2)->count();
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -62,7 +75,9 @@ class AttractionsAllResource extends JsonResource
             'voted' => $voted,
             'weekWork' => $this->weekWork,
             'isFavorite' => $isFavorite,
-            'imageUrl' => 'https://kurort26-api.ru/api/cards/photo/' . $this->category_id . '/' . $this->id . '/' . 1,
+            'category_id' => $this->category_id,
+            //'imageUrl' => 'https://kurort26-api.ru/api/cards/photo/' . $this->category_id . '/' . $this->id . '/' . 1,
+            'images' => $images,
         ];
     }
 }

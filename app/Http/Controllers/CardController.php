@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReactionImageRequest;
 use App\Http\Requests\ReactionRequest;
 use App\Http\Resources\AttractionsAllResource;
 use App\Http\Resources\AttractionsResource;
 use App\Http\Resources\FoodsAllResource;
 use App\Http\Resources\FoodsResource;
 use App\Http\Resources\PostersAllResource;
+use App\Http\Resources\PostersResource;
 use App\Http\Resources\RoutersAllResource;
 use App\Http\Resources\RoutersResource;
+use App\Http\Resources\ShopingResource;
 use App\Models\Allimage;
 use App\Models\Attraction;
 use App\Models\Card;
@@ -26,6 +29,7 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Reactionsimage;
 
 class CardController extends Controller
 {
@@ -42,39 +46,27 @@ class CardController extends Controller
     public function indexAttractions()
     {
         $data = Attraction::all();
-        //return response()->json($data);
-        return AttractionsResource::collection($data);
-    }
-
-    public function indexAllAttractions()
-    {
-        $data = Attraction::all();
         return AttractionsAllResource::collection($data);
     }
 
     public function showAttractions(string $id)
     {
-        $data = Attraction::find($id);
+        $data = Attraction::where('id', $id)->get();
         if(!$data)
         {
             return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
-        $city = Citie::find($id)->first();
-        $data['city'] = $city['name'];
-        $type = Type::find($id)->first();
-        $data['type'] = $type['name'];
-        $imageUrl = $this->searchImages($id, $data['category_id']);
-        $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+//        $city = Citie::find($id)->first();
+//        $data['city'] = $city['name'];
+//        $type = Type::find($id)->first();
+//        $data['type'] = $type['name'];
+//        $imageUrl = $this->searchImages($id, $data['category_id']);
+//        $reviews = $this->searchReview($id, $data['category_id']);
+        //return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        return AttractionsResource::collection($data);
     }
 
     public function indexFoods()
-    {
-        $data = Food::all();
-        return FoodsResource::collection($data);
-    }
-
-    public function indexAllFoods()
     {
         $data = Food::all();
         return FoodsAllResource::collection($data);
@@ -82,23 +74,15 @@ class CardController extends Controller
 
     public function showFoods(string $id)
     {
-        $data = Food::find($id);
+        $data = Food::where('id', $id)->get();
         if(!$data)
         {
             return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
-        $imageUrl = $this->searchImages($id, $data['category_id']);
-        $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        return FoodsResource::collection($data);
     }
 
     public function indexRouters()
-    {
-        $data = Router::all();
-        return RoutersResource::collection($data);
-    }
-
-    public function indexAllRouters()
     {
         $data = Router::all();
         return RoutersAllResource::collection($data);
@@ -106,24 +90,15 @@ class CardController extends Controller
 
     public function showRouters(string $id)
     {
-        $data = Router::find($id);
+        $data = Router::where('id', $id)->get();
         if(!$data)
         {
             return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
-        $imageUrl = $this->searchImages($id, $data['category_id']);
-        $reviews = $this->searchReview($id, $data['category_id']);
-        $routerpoints = Routerpoint::where('router_id', $id)->get();
-        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews, 'routerpoints' => $routerpoints]);
+        return RoutersResource::collection($data);
     }
 
     public function indexShopings()
-    {
-        $data = Shoping::all();
-        return AttractionsResource::collection($data);
-    }
-
-    public function indexAllShopings()
     {
         $data = Shoping::all();
         return AttractionsAllResource::collection($data);
@@ -131,23 +106,15 @@ class CardController extends Controller
 
     public function showShopings(string $id)
     {
-        $data = Shoping::find($id);
+        $data = Shoping::where('id', $id)->get();
         if(!$data)
         {
             return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
-        $imageUrl = $this->searchImages($id, $data['category_id']);
-        $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        return ShopingResource::collection($data);
     }
 
     public function indexPosters()
-    {
-        $data = Poster::all();
-        return AttractionsResource::collection($data);
-    }
-
-    public function indexAllPosters()
     {
         $data = Poster::all();
         return PostersAllResource::collection($data);
@@ -155,40 +122,39 @@ class CardController extends Controller
 
     public function showPosters(string $id)
     {
-        $data = Poster::find($id);
+        $data = Poster::where('id', $id)->get();
         if(!$data)
         {
             return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
-        $imageUrl = $this->searchImages($id, $data['category_id']);
-        $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        return PostersResource::collection($data);
     }
 
-    public function searchImages(string $id, string $category_id)
-    {
-        $count = Image::where('card_id', $id)->where('category_id', $category_id)->count();
-        $imageUrl = [];
-        for($i = 0; $i < $count; $i++)
-        {
-            $imageUrl[] = 'https://kurort26-api.ru/api/cards/photo/' . $category_id . '/' . $id . '/' . $i+1;
-        }
-        return $imageUrl;
-    }
-
-    public function searchReview(string $id, string $category_id)
-    {
-        $reviews = Review::where('card_id', $id)->where('category_id', $category_id)->get();
-        foreach ($reviews as $review)
-        {
-            $review['likes'] = Reaction::where('review_id', $review->id)->where('type', 1)->count();
-        }
-        foreach ($reviews as $review)
-        {
-            $review['dislikes'] = Reaction::where('review_id', $review->id)->where('type', 2)->count();
-        }
-        return $reviews;
-    }
+//    public function searchImages(string $id, string $category_id)
+//    {
+//        $count = Image::where('card_id', $id)->where('category_id', $category_id)->count();
+//        $imageUrl = [];
+//        for($i = 0; $i < $count; $i++)
+//        {
+//            $imageUrl[] = 'https://kurort26-api.ru/api/cards/photo/' . $category_id . '/' . $id . '/' . $i+1;
+//        }
+//        return $imageUrl;
+//    }
+//
+//
+//    public function searchReview(string $id, string $category_id)
+//    {
+//        $reviews = Review::where('card_id', $id)->where('category_id', $category_id)->get();
+//        foreach ($reviews as $review)
+//        {
+//            $review['likes'] = Reaction::where('review_id', $review->id)->where('type', 1)->count();
+//        }
+//        foreach ($reviews as $review)
+//        {
+//            $review['dislikes'] = Reaction::where('review_id', $review->id)->where('type', 2)->count();
+//        }
+//        return $reviews;
+//    }
 
     public function photoCards(string $cat_id,string $id, string $page)
     {
@@ -217,5 +183,24 @@ class CardController extends Controller
         }
         Reaction::firstOrCreate($data);
         return response()->json($data);
+    }
+
+    public function reactionImage(ReactionImageRequest $request)
+    {
+        $data = $request->validated();
+        $img = Image::where('id', $data['img_id'])->exists();
+        if(empty($img))
+        {
+            return response()->json(['success' => false, 'error' => 'Такого изображения не существует']);
+        }
+        $data['user_id'] = Auth::id();
+        $reaction = Reactionsimage::where('user_id', $data['user_id'])->where('img_id', $data['img_id'])->first();
+        if($reaction)
+        {
+            $reaction->fill($data);
+            $reaction->save();
+        }
+        Reactionsimage::firstOrCreate($data);
+        return response()->json(['success' => true, 'message' => 'Вы успешно оставили реакцию на изображение']);
     }
 }

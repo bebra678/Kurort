@@ -8,13 +8,12 @@ use App\Models\Image;
 use App\Models\Reaction;
 use App\Models\Reactionsimage;
 use App\Models\Review;
-use App\Models\Routerpoint;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
-class AttractionsResource extends JsonResource
+class ShopingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -77,6 +76,7 @@ class AttractionsResource extends JsonResource
             'isTop' => $this->isTop,
             'chooseCurort26' => $this->chooseCurort26,
             'features' => $this->features,
+            'canBuy' => $this->canBuy,
             'rating' => $rating,
             'voted' => $voted,
             'weekWork' => $this->weekWork,
@@ -88,3 +88,4 @@ class AttractionsResource extends JsonResource
         ];
     }
 }
+

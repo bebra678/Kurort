@@ -31,8 +31,8 @@ class UserRequest extends FormRequest
             case 'PUT':
                 return [
                     'name' => ['nullable', 'string', 'max:30', 'min:2', 'regex:/^[\p{Cyrillic}-]+$/u'],
-                    'email' => ['nullable', 'string', 'email', 'min:10','max:100', Rule::unique('users')->ignore($this->email, 'email')],
-                    'number' => ['nullable', 'regex:/^[\+7] \(\d{3}\) \d{3}-\d{2}-\d{2}$/', Rule::unique('users')->ignore($this->number, 'number')],
+                    //'email' => ['nullable', 'string', 'email', 'min:10','max:100', Rule::unique('users')->ignore($this->email, 'email')],
+                    //'number' => ['nullable', 'regex:/^[\+7] \(\d{3}\) \d{3}-\d{2}-\d{2}$/', Rule::unique('users')->ignore($this->number, 'number')],
                 ];
         }
     }

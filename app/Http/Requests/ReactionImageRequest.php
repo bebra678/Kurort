@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ReactionRequest extends FormRequest
+class ReactionImageRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class ReactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'review_id' => ['required', 'integer', 'max:11'],
+            'img_id' => ['required', 'integer', 'max:11'],
             'type' => ['required', 'integer', 'max:2', 'between:1,2'],
         ];
     }
@@ -24,10 +24,10 @@ class ReactionRequest extends FormRequest
     public function messages()
     {
         return [
-            'review_id' => [
-                'required' => 'Ошибка! Нет id отзыва',
+            'img_id' => [
+                'required' => 'Ошибка! Нет id изображения',
                 'max' => 'Максимально допустимое значение: 1',
-                'integer' => 'Ошибка! Передаваемое значение review_id должно быть integer',
+                'integer' => 'Ошибка! Передаваемое значение img_id должно быть integer',
             ],
             'type' => [
                 'required' => 'Ошибка! Нет type',
