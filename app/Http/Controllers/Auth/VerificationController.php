@@ -81,9 +81,9 @@ class VerificationController extends Controller
             $user->verification_code = null;
             $user->email_verified_at = now();
             $user->save();
-            Mail::raw( $user->name .', Вы успешно подтвердили свою почту!', function ($message) use ($user) {
-                $message->to($user->email)->subject('Поздравляем с успешной регистрацией');
-            });
+//            Mail::raw( $user->name .', Вы успешно подтвердили свою почту!', function ($message) use ($user) {
+//                $message->to($user->email)->subject('Поздравляем с успешной регистрацией');
+//            });
             return response()->json(['success' => true, 'message' => 'Вы успешно подтвердили свою почту!']);
         }
         else
@@ -91,36 +91,4 @@ class VerificationController extends Controller
             return response()->json(['success' => false, 'error' => 'Неверный код подтверждения']);
         }
     }
-
-    //    public function verify(Request $request)
-//    {
-//        $userID = $request['id'];
-//        $user = User::findOrFail($userID);
-//
-//        if ($user->hasVerifiedEmail()) {
-//            //return response()->json(['message' => 'Email уже подтвержден.'], 400);
-//            return view('email_error');
-//        }
-//
-//        if ($user->markEmailAsVerified()) {
-//            event(new Verified($user));
-//        }
-//
-//        //return response()->json(['message' => 'Email успешно подтвержден.'], 200);
-//        return view('email_confirm');
-//    }
-//
-//    public function resend(Request $request)
-//    {
-//        $user = $request->user();
-//
-//        if ($user->hasVerifiedEmail()) {
-//            //return response()->json(['message' => 'Email уже подтвержден.'], 400);
-//            return view('email_error');
-//        }
-//
-//        $user->sendEmailVerificationNotification();
-//
-//        return response()->json(['message' => 'Письмо для подтверждения email отправлено'], 200);
-//    }
 }

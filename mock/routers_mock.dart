@@ -87,7 +87,7 @@ List<Map<String, dynamic>> routersMock = [
       },
       {
         "name": "",
-        "path": "assets/images/routers/image1-3.webp",
+        "path": "https://kurort26-api.ru/images/image1-3.webp",
         "date": "2023-05-15T08:00:00.000Z",
         "changed": "2023-05-15T08:00:00.000Z",
         "likes": 0,

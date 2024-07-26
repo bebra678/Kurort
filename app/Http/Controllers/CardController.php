@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ReactionRequest;
+use App\Http\Resources\AttractionsAllResource;
 use App\Http\Resources\AttractionsResource;
+use App\Http\Resources\FoodsAllResource;
 use App\Http\Resources\FoodsResource;
+use App\Http\Resources\PostersAllResource;
+use App\Http\Resources\RoutersAllResource;
 use App\Http\Resources\RoutersResource;
 use App\Models\Allimage;
 use App\Models\Attraction;
@@ -16,6 +20,7 @@ use App\Models\Poster;
 use App\Models\Reaction;
 use App\Models\Review;
 use App\Models\Router;
+use App\Models\Routerpoint;
 use App\Models\Shoping;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -43,7 +48,8 @@ class CardController extends Controller
 
     public function indexAllAttractions()
     {
-        return response()->json(Attraction::all());
+        $data = Attraction::all();
+        return AttractionsAllResource::collection($data);
     }
 
     public function showAttractions(string $id)
@@ -70,7 +76,8 @@ class CardController extends Controller
 
     public function indexAllFoods()
     {
-        return response()->json(Food::all());
+        $data = Food::all();
+        return FoodsAllResource::collection($data);
     }
 
     public function showFoods(string $id)
@@ -93,7 +100,8 @@ class CardController extends Controller
 
     public function indexAllRouters()
     {
-        return response()->json(Router::all());
+        $data = Router::all();
+        return RoutersAllResource::collection($data);
     }
 
     public function showRouters(string $id)
@@ -105,7 +113,8 @@ class CardController extends Controller
         }
         $imageUrl = $this->searchImages($id, $data['category_id']);
         $reviews = $this->searchReview($id, $data['category_id']);
-        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
+        $routerpoints = Routerpoint::where('router_id', $id)->get();
+        return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews, 'routerpoints' => $routerpoints]);
     }
 
     public function indexShopings()
@@ -116,7 +125,8 @@ class CardController extends Controller
 
     public function indexAllShopings()
     {
-        return response()->json(Shoping::all());
+        $data = Shoping::all();
+        return AttractionsAllResource::collection($data);
     }
 
     public function showShopings(string $id)
@@ -139,7 +149,8 @@ class CardController extends Controller
 
     public function indexAllPosters()
     {
-        return response()->json(Poster::all());
+        $data = Poster::all();
+        return PostersAllResource::collection($data);
     }
 
     public function showPosters(string $id)

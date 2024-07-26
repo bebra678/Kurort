@@ -87,6 +87,15 @@ class RegisterController extends Controller
     public function register(UserRequest $request)
     {
         $request->validated();
+        $data = User::where('email', $request->email)->first();
+        if($data)
+        {
+            if($data->hasVerifiedEmail())
+            {
+                return response()->json(['success' => false, 'errors' => 'Данная почта занята']);
+            }
+            return response()->json(['success' => false, 'errors' => 'Вы не подтвердили почту']);
+        }
         event(new Registered($user = $this->create($request->all())));
         $token = JWTAuth::fromUser($user);
         return response()->json(['success' => true, 'access_token' => $token, 'user' => $user]);

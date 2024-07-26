@@ -18,7 +18,8 @@ class UserRequest extends FormRequest
     {
         $rules = [
             'name' => ['required', 'string', 'max:30', 'min:2', 'regex:/^[\p{Cyrillic}-]+$/u'],
-            'email' => ['nullable', 'string', 'email', 'min:10','max:100', Rule::unique('users')],
+            //'email' => ['nullable', 'string', 'email', 'min:10','max:100', Rule::unique('users')],
+            'email' => ['nullable', 'string', 'email', 'min:10','max:100'],
             'password' => ['required', 'string', 'max:100', 'min:6'],
             'number' => ['nullable', 'regex:/^[\+7] \(\d{3}\) \d{3}-\d{2}-\d{2}$/', Rule::unique('users')],
         ];
