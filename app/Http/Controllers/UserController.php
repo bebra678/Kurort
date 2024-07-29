@@ -102,6 +102,8 @@ class UserController extends Controller
             'rating' => $data['rating'],
             'category_id' => $data['category_id'],
         ]);
+        $images = [];
+        $i = 1;
         if ($request->hasFile('images'))
         {
             foreach ($request->file('images') as $image)
@@ -112,9 +114,11 @@ class UserController extends Controller
                     'name' => $path,
                     'path' => 'https://kurort26-api.ru/images/reviews/' . $path,
                 ]);
+                $images[$i] = 'https://kurort26-api.ru/images/reviews/' . $path;
+                $i++;
             }
         }
-        return response()->json(['success' => true, 'data' => $data]);
+        return response()->json(['success' => true, 'data' => $data, 'images' => $images]);
     }
 
     public function favorite(FavoriteRequest $request)

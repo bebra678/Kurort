@@ -12,6 +12,7 @@ class Reviewsimage extends Model
     protected $fillable = [
         'review_id',
         'name',
+        'path',
     ];
 
     protected $hidden = [
