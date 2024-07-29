@@ -21,7 +21,8 @@ class ReviewRequest extends FormRequest
             'text' => ['required', 'string', 'max:240', 'min:3'],
             'rating' => ['required', 'integer', 'between:1,5'],
             'category_id' => ['required', 'integer', 'max:11'],
-            'photo' => ['nullable', 'file', 'mimes:jpg,png'],
+            'images' => ['max:3'],
+            'images.*' => ['image', 'mimes:jpg,png,jpeg,svg'], //, 'max:6144'
         ];
     }
 
@@ -48,9 +49,10 @@ class ReviewRequest extends FormRequest
                 'between' => 'Ошибка! Передаваемое значение должно быть от 1 до 5',
                 'integer' => 'Ошибка! Передаваемое значение rating должно быть integer'
             ],
-            'photo' => [
-                'file' => 'Ошибка с файлом изображения',
-                'mimes' => 'Формат файла изображения должен быть: .jpg .png',
+            'images.*' => [
+                'image' => 'Отправляймые данные должны быть изображениями',
+                'mimes' => 'Формат изображения должен быть: .jpg, .png, .jpeg, .svg',
+                'max' => 'Максимальное количество изображений: 3',
             ],
         ];
     }

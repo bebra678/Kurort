@@ -8,8 +8,10 @@ use App\Models\Image;
 use App\Models\Reaction;
 use App\Models\Reactionsimage;
 use App\Models\Review;
+use App\Models\Reviewsimage;
 use App\Models\Routerpoint;
 use App\Models\Type;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -28,13 +30,15 @@ class RoutersResource extends JsonResource
         $city = Citie::find($this->city_id);
         $city = $city['name'];
         $reviews = Review::where('card_id', $this->id)->where('category_id', $this->category_id)->get();
-        foreach ($reviews as $review)
+        if($reviews)
         {
-            $review['likes'] = Reaction::where('review_id', $review->id)->where('type', 1)->count();
-        }
-        foreach ($reviews as $review)
-        {
-            $review['dislikes'] = Reaction::where('review_id', $review->id)->where('type', 2)->count();
+            foreach ($reviews as $review) {
+                $review['likes'] = Reaction::where('review_id', $review->id)->where('type', 1)->count();
+                $review['dislikes'] = Reaction::where('review_id', $review->id)->where('type', 2)->count();
+                $user = User::find($review->user_id);
+                $review['name'] = $user['name'];
+                $review['images_reviews'] = Reviewsimage::where('review_id', $review->id)->get();
+            }
         }
         $rating = round((float) $reviews->avg('rating'), 1);
         $voted = Review::where('card_id', $this->id)->where('category_id', $this->category_id)->count();

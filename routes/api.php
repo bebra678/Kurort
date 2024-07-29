@@ -46,6 +46,7 @@ Route::group(['middleware' => 'user_auth'], function ($router) {
 
 //Route::get('cards/photo/{cat_id}/{id}/{page}', [CardController::class, 'photoCards']);
 Route::get('/images', [CardController::class, 'imagesAll']);
+Route::get('/images/reviews', [CardController::class, 'imagesAll']);
 
 Route::get('cards/attractions', [CardController::class, 'indexAttractions']);
 Route::get('cards/attractions/{id}', [CardController::class, 'showAttractions']);

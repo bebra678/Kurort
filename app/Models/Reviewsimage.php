@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Review extends Model
+class Reviewsimage extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id',
-        'user_id',
-        'card_id',
-        'text',
-        'rating',
-        'category_id',
+        'review_id',
+        'name',
+    ];
+
+    protected $hidden = [
+        'review_id',
     ];
 }

@@ -14,6 +14,7 @@ use App\Models\Food;
 use App\Models\Poster;
 use App\Models\Reaction;
 use App\Models\Review;
+use App\Models\Reviewsimage;
 use App\Models\Router;
 use App\Models\Shoping;
 use App\Models\User;
@@ -62,7 +63,7 @@ class UserController extends Controller
         return response()->json($data);
     }
 
-    public function review(ReviewRequest $request) //надо переделать
+    public function review(ReviewRequest $request) //надо переделать ReviewRequest
     {
         $data = $request->validated();
         $array = Review::where('user_id', Auth::id())->where('card_id', $data['card_id'])->where('category_id', $data['category_id'])->exists();
@@ -94,10 +95,25 @@ class UserController extends Controller
         {
             return response()->json(['success' => false, 'error' => 'Такой карточки не сущевствует']);
         }
-        $user = Auth::user();
-        $data['name'] = $user['name'];
-        $data['user_id'] = Auth::id();
-        Review::firstOrCreate($data);
+        $data = Review::create([
+            'user_id' => $data['user_id'] = Auth::id(),
+            'card_id' => $data['card_id'],
+            'text' => $data['text'],
+            'rating' => $data['rating'],
+            'category_id' => $data['category_id'],
+        ]);
+        if ($request->hasFile('images'))
+        {
+            foreach ($request->file('images') as $image)
+            {
+                $path = Storage::disk('reviews')->put('', $image);
+                Reviewsimage::create([
+                    'review_id' => $data->id,
+                    'name' => $path,
+                    'path' => 'https://kurort26-api.ru/images/reviews/' . $path,
+                ]);
+            }
+        }
         return response()->json(['success' => true, 'data' => $data]);
     }
 

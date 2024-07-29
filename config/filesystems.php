@@ -42,6 +42,12 @@ return [
             'throw' => false,
         ],
 
+        'reviews' => [
+            'driver' => 'local',
+            'root' => base_path('public_html/images/reviews'),
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
