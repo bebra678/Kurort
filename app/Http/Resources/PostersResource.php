@@ -53,6 +53,14 @@ class PostersResource extends JsonResource
             $img['likes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 1)->count();
             $img['dislikes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 2)->count();
         }
+        if($this->isTop == 1)
+        {
+            $isTop = true;
+        }
+        else
+        {
+            $isTop = false;
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -77,7 +85,7 @@ class PostersResource extends JsonResource
             'text' => $this->text,
             'reasonsVisit' => $this->reasonsVisit,
             'verified' => $this->verified,
-            'isTop' => $this->isTop,
+            'isTop' => $isTop,
             'chooseCurort26' => $this->chooseCurort26,
             'features' => $this->features,
             'rating' => $rating,

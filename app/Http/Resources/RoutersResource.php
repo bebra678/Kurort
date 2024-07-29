@@ -55,6 +55,14 @@ class RoutersResource extends JsonResource
             $img['dislikes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 2)->count();
         }
         $routerpoints = Routerpoint::where('router_id', $this->id)->get();
+        if($this->isTop == 1)
+        {
+            $isTop = true;
+        }
+        else
+        {
+            $isTop = false;
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -72,7 +80,7 @@ class RoutersResource extends JsonResource
             'text' => $this->text,
             'reasonsVisit' => $this->reasonsVisit,
             'verified' => $this->verified,
-            'isTop' => $this->isTop,
+            'isTop' => $isTop,
             'chooseCurort26' => $this->chooseCurort26,
             'features' => $this->features,
             'totalTime' => $this->totalTime,

@@ -48,6 +48,22 @@ class AttractionsAllResource extends JsonResource
             $img['likes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 1)->count();
             $img['dislikes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 2)->count();
         }
+        if($this->isTop == 1)
+        {
+            $isTop = true;
+        }
+        else
+        {
+            $isTop = false;
+        }
+        if($this->isParking == 1)
+        {
+            $isParking = true;
+        }
+        else
+        {
+            $isParking = false;
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -62,13 +78,13 @@ class AttractionsAllResource extends JsonResource
             'phone' => $this->phone,
             'social' => $this->social,
             'taxi' => 123,
-            'isParking' => $this->isParking,
+            'isParking' => $isParking,
             'percent' => $this->percent,
             'preview' => $this->preview,
             'text' => $this->text,
             'reasonsVisit' => $this->reasonsVisit,
             'verified' => $this->verified,
-            'isTop' => $this->isTop,
+            'isTop' => $isTop,
             'chooseCurort26' => $this->chooseCurort26,
             'features' => $this->features,
             'rating' => $rating,

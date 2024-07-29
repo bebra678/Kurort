@@ -49,6 +49,22 @@ class RoutersAllResource extends JsonResource
             $img['likes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 1)->count();
             $img['dislikes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 2)->count();
         }
+        if($this->isTop == 1)
+        {
+            $isTop = true;
+        }
+        else
+        {
+            $isTop = false;
+        }
+        if($this->isParking == 1)
+        {
+            $isParking = true;
+        }
+        else
+        {
+            $isParking = false;
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -66,13 +82,13 @@ class RoutersAllResource extends JsonResource
             'text' => $this->text,
             'reasonsVisit' => $this->reasonsVisit,
             'verified' => $this->verified,
-            'isTop' => $this->isTop,
+            'isTop' => $isTop,
             'chooseCurort26' => $this->chooseCurort26,
             'features' => $this->features,
             'totalTime' => $this->totalTime,
             'totalDistance' => $this->totalDistance,
             'anyIndex' => $this->anyIndex,
-            'isParking' => $this->isParking,
+            'isParking' => $isParking,
             'imageMap' => $this->imageMap,
             'rating' => $rating,
             'voted' => $voted,
