@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FavoriteRequest;
 use App\Http\Requests\PhotoRequest;
 use App\Http\Requests\ReviewRequest;
+use App\Http\Requests\UpdateEmailRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Attraction;
 use App\Models\Card;
 use App\Models\Categorie;
+use App\Models\Editemail;
 use App\Models\Favorite;
 use App\Models\Food;
 use App\Models\Poster;
@@ -20,6 +22,7 @@ use App\Models\Shoping;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -45,13 +48,16 @@ class UserController extends Controller
     {
         $request->validated();
         $user = Auth()->user();
-        if($user['photo'])
+        $filePath = base_path('public/images/users/' . $user['photo']);
+        if (file_exists($filePath))
         {
-            Storage::delete('public/' . $user['photo']);
+            unlink($filePath);
         }
-        Storage::disk('public')->put('user/', $request['photo']);
+        $name = Storage::disk('user_photo')->put('', $request['photo']);
+        $user['photo'] = $name;
+        $user['path_photo'] = 'https://kurort26-api.ru/api/images/users/' . $name;
         $user->save();
-        return response()->json(['photo' => 'https://kurort26-api.ru/api/user/photo']);
+        return response()->json(['photo' => 'https://kurort26-api.ru/api/images/users/' . $name]);
     }
 
     public function update(UserRequest $request)
@@ -180,5 +186,50 @@ class UserController extends Controller
             return response()->json(['success' => false, 'error' => 'Список пуст']);
         }
         return response()->json(['success' => true, 'data' =>$data]);
+    }
+
+    public function updateEmail(UpdateEmailRequest $request)
+    {
+        $data = $request->validated();
+        $user = Auth::user();
+        $updateEmail = Editemail::where('user_id', $user['id'])->exists();
+        if($updateEmail)
+        {
+            return response()->json(['success' => false, 'error' => 'Вы уже подали заявку на смену почты']);
+        }
+        $updateEmail1 = Editemail::where('email', $data['email'])->exists();
+        if($updateEmail1)
+        {
+            return response()->json(['success' => false, 'error' => 'Данная почта занята']);
+        }
+        $data['user_id'] = $user['id'];
+        $verificationCode = mt_rand(100000, 999999);
+        $data['verification_code'] = $verificationCode;
+        Editemail::firstOrCreate($data);
+        Mail::raw('Ваш код подтверждения для смены почты: ' . $verificationCode, function ($message) use ($user) {
+            $message->to($user['email'])->subject('Код подтверждения');
+        });
+        return response()->json(['success' => true, 'message' => 'Код подтверждения отправлен на вашу почту']);
+    }
+
+    public function verifyCodeEmail(Request $request)
+    {
+        $updateEmail = Editemail::where('user_id', Auth::id())->first();
+        if(!$updateEmail)
+        {
+            return response()->json(['success' => false, 'error' => 'Вы не оставляли заявку на смену почты']);
+        }
+        if($updateEmail['verification_code'] === $request->code)
+        {
+            $user = User::find(Auth::id());
+            $user['email'] = $updateEmail['email'];
+            $updateEmail->delete();
+            $user->save();
+            return response()->json(['success' => true, 'message' => 'Вы успешно подтвердили свою новую почту!']);
+        }
+        else
+        {
+            return response()->json(['success' => false, 'error' => 'Неверный код подтверждения']);
+        }
     }
 }

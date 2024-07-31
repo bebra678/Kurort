@@ -156,15 +156,15 @@ class CardController extends Controller
 //        return $reviews;
 //    }
 
-    public function photoCards(string $cat_id,string $id, string $page)
-    {
-        $data = Image::where('card_id', $id)->where('page', $page)->where('category_id', $cat_id)->first();
-        if(!$data)
-        {
-            return response()->json(['success' => false, 'error' => 'Изображение не найдено']);
-        }
-        return response()->file(Storage::path('public/images/' . $data['name']));
-    }
+//    public function photoCards(string $cat_id,string $id, string $page)
+//    {
+//        $data = Image::where('card_id', $id)->where('page', $page)->where('category_id', $cat_id)->first();
+//        if(!$data)
+//        {
+//            return response()->json(['success' => false, 'error' => 'Изображение не найдено']);
+//        }
+//        return response()->file(Storage::path('public/images/' . $data['name']));
+//    }
 
     public function imagesAll()
     {

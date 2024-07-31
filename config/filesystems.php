@@ -42,6 +42,12 @@ return [
             'throw' => false,
         ],
 
+        'user_photo' => [
+            'driver' => 'local',
+            'root' => base_path('public_html/images/users'),
+            'throw' => false,
+        ],
+
         'reviews' => [
             'driver' => 'local',
             'root' => base_path('public_html/images/reviews'),
