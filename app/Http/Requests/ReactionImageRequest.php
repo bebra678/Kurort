@@ -43,7 +43,7 @@ class ReactionImageRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'success' => false,
             'message' => 'Ошибка валидации',
-            'errors' => $validator->errors()
+            'error' => $validator->errors()
         ]));
     }
 }

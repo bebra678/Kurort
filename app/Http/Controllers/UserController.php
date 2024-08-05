@@ -57,7 +57,7 @@ class UserController extends Controller
         $user['photo'] = $name;
         $user['path_photo'] = 'https://kurort26-api.ru/api/images/users/' . $name;
         $user->save();
-        return response()->json(['photo' => 'https://kurort26-api.ru/api/images/users/' . $name]);
+        return response()->json(['success' => true, 'name' => $name, 'path' => 'https://kurort26-api.ru/api/images/users/' . $name]);
     }
 
     public function update(UserRequest $request)
@@ -66,7 +66,7 @@ class UserController extends Controller
         $data = User::find(Auth::id());
         $data->fill($request->except(['id']));
         $data->save();
-        return response()->json($data);
+        return response()->json(['success' => true, 'message' => 'Вы успешно изменили данные']);
     }
 
     public function review(ReviewRequest $request) //надо переделать ReviewRequest

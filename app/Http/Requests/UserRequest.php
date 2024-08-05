@@ -21,7 +21,7 @@ class UserRequest extends FormRequest
             //'email' => ['nullable', 'string', 'email', 'min:10','max:100', Rule::unique('users')],
             'email' => ['nullable', 'string', 'email', 'min:10','max:100'],
             'password' => ['required', 'string', 'max:100', 'min:6'],
-            'number' => ['nullable', 'regex:/^[\+7] \(\d{3}\) \d{3}-\d{2}-\d{2}$/', Rule::unique('users')],
+            //'number' => ['nullable', 'regex:/^[\+7] \(\d{3}\) \d{3}-\d{2}-\d{2}$/', Rule::unique('users')],
         ];
 
         switch ($this->getMethod())
@@ -51,17 +51,17 @@ class UserRequest extends FormRequest
                 'max' => 'Максимально допустимое значение: 100',
                 'min' => 'Минимальное допустимое значение: 10',
                 'email' => 'Неправильный формат почты',
-                'unique' => 'Данная почта занята',
+                //'unique' => 'Данная почта занята',
             ],
             'password' => [
                 'required' => 'Поле не должно быть пустым',
                 'max' => 'Максимально допустимое значение: 100',
                 'min' => 'Минимальное допустимое значение: 6',
             ],
-            'number' => [
-                'regex' => 'Номер телефона должен быть формата: +7 (999) 999-99-99',
-                'unique' => 'Данный номер телефона занят',
-            ],
+//            'number' => [
+//                'regex' => 'Номер телефона должен быть формата: +7 (999) 999-99-99',
+//                'unique' => 'Данный номер телефона занят',
+//            ],
         ];
     }
 
@@ -70,7 +70,7 @@ class UserRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'success' => false,
             'message' => 'Ошибка валидации',
-            'errors' => $validator->errors()
+            'error' => $validator->errors()
         ]));
     }
 }

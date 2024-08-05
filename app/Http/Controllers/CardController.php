@@ -182,7 +182,7 @@ class CardController extends Controller
             $reaction->save();
         }
         Reaction::firstOrCreate($data);
-        return response()->json($data);
+        return response()->json(['success' => true]);
     }
 
     public function reactionImage(ReactionImageRequest $request)
@@ -201,6 +201,6 @@ class CardController extends Controller
             $reaction->save();
         }
         Reactionsimage::firstOrCreate($data);
-        return response()->json(['success' => true, 'message' => 'Вы успешно оставили реакцию на изображение']);
+        return response()->json(['success' => true]);
     }
 }

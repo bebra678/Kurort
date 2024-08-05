@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class VerificationController extends Controller
 {
@@ -81,10 +82,11 @@ class VerificationController extends Controller
             $user->verification_code = null;
             $user->email_verified_at = now();
             $user->save();
+            $token = JWTAuth::fromUser($user);
 //            Mail::raw( $user->name .', Вы успешно подтвердили свою почту!', function ($message) use ($user) {
 //                $message->to($user->email)->subject('Поздравляем с успешной регистрацией');
 //            });
-            return response()->json(['success' => true, 'message' => 'Вы успешно подтвердили свою почту!']);
+            return response()->json(['success' => true, 'message' => 'Вы успешно подтвердили свою почту!', 'user' => $user, 'access_token' => $token]);
         }
         else
         {

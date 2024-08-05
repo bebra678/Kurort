@@ -97,7 +97,6 @@ class RegisterController extends Controller
             return response()->json(['success' => false, 'errors' => 'Вы не подтвердили почту']);
         }
         event(new Registered($user = $this->create($request->all())));
-        $token = JWTAuth::fromUser($user);
-        return response()->json(['success' => true, 'access_token' => $token, 'user' => $user]);
+        return response()->json(['success' => true, 'message' => 'Код подтверждения отправлен на вашу почту']);
     }
 }

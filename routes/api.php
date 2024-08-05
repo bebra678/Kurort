@@ -42,7 +42,7 @@ Route::group(['middleware' => 'user_auth'], function ($router) {
         Route::post('reaction', [CardController::class, 'reaction']);
         Route::post('reaction/img', [CardController::class, 'reactionImage']);
         Route::post('update/email', [UserController::class, 'updateEmail']);
-        Route::post('/verify-code/email', [UserController::class, 'verifyCodeEmail']);
+        Route::post('verify-code/email', [UserController::class, 'verifyCodeEmail']);
     });
 });
 

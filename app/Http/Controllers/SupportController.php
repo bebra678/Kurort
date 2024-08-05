@@ -14,6 +14,6 @@ class SupportController extends Controller
         $data = $request->validated();
         $data['user_id'] = Auth::id();
         Support::firstOrCreate($data);
-        return response()->json($data);
+        return response()->json(['success' => true, 'message' => 'Вы успешно оставили заявку в поддержку. Ожидайте ответа на почте.']);
     }
 }
