@@ -21,10 +21,20 @@ class PostersAllResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $type = Type::find($this->type_id);
-        $type = $type['name'];
-        $city = Citie::find($this->city_id);
-        $city = $city['name'];
+        if(isset($this->type_id))
+        {
+            $type = Type::find($this->type_id);
+            $type = $type['name'];
+        }
+        if(isset($this->city_id))
+        {
+            $city = Citie::find($this->city_id);
+            $city = $city['name'];
+        }
+        if($this->minCheck)
+        {
+            $averageCheck = $this->minCheck . '-' . $this->maxCheck;
+        }
         $reviews = Review::where('card_id', $this->id)->where('category_id', $this->category_id)->get();
         $rating = round((float) $reviews->avg('rating'), 1);
         $voted = Review::where('card_id', $this->id)->where('category_id', $this->category_id)->count();
@@ -59,8 +69,8 @@ class PostersAllResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'begin' => $this->begin,
-            'type' => $type,
-            'city' => $city,
+            'type' => $type ?? null,
+            'city' => $city ?? null,
             'restrictions' => $this->restrictions,
             'nameInstitution' => $this->nameInstitution,
             'titleDesc' => $this->titleDesc,
@@ -78,7 +88,7 @@ class PostersAllResource extends JsonResource
             'preview' => $this->preview,
             'text' => $this->text,
             'reasonsVisit' => $this->reasonsVisit,
-            'verified' => $this->verified,
+            'verified' => $this->removeBrackets($this->verified),
             'isTop' => $isTop,
             'chooseCurort26' => $this->chooseCurort26,
             'features' => $this->features,
@@ -89,5 +99,14 @@ class PostersAllResource extends JsonResource
             'category_id' => $this->category_id,
             'images' => $images,
         ];
+    }
+
+    private function removeBrackets($string)
+    {
+        if(isset($string))
+        {
+            return $string[0];
+        }
+        return null;
     }
 }

@@ -14,10 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Route::get('/', function () {
+//    return view('images');
+//});
+
 Route::get('/', function () {
-    return view('images');
+    return view('main');
 });
 
 //Auth::routes(['verify' => true]);
+Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

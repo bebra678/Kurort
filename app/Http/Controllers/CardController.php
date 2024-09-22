@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AsdRequest;
+use App\Http\Requests\ParsRequest;
 use App\Http\Requests\ReactionImageRequest;
 use App\Http\Requests\ReactionRequest;
 use App\Http\Resources\AttractionsAllResource;
@@ -25,6 +27,7 @@ use App\Models\Review;
 use App\Models\Router;
 use App\Models\Routerpoint;
 use App\Models\Shoping;
+use App\Models\Test;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -130,41 +133,6 @@ class CardController extends Controller
         return PostersResource::collection($data);
     }
 
-//    public function searchImages(string $id, string $category_id)
-//    {
-//        $count = Image::where('card_id', $id)->where('category_id', $category_id)->count();
-//        $imageUrl = [];
-//        for($i = 0; $i < $count; $i++)
-//        {
-//            $imageUrl[] = 'https://kurort26-api.ru/api/cards/photo/' . $category_id . '/' . $id . '/' . $i+1;
-//        }
-//        return $imageUrl;
-//    }
-//
-//
-//    public function searchReview(string $id, string $category_id)
-//    {
-//        $reviews = Review::where('card_id', $id)->where('category_id', $category_id)->get();
-//        foreach ($reviews as $review)
-//        {
-//            $review['likes'] = Reaction::where('review_id', $review->id)->where('type', 1)->count();
-//        }
-//        foreach ($reviews as $review)
-//        {
-//            $review['dislikes'] = Reaction::where('review_id', $review->id)->where('type', 2)->count();
-//        }
-//        return $reviews;
-//    }
-
-//    public function photoCards(string $cat_id,string $id, string $page)
-//    {
-//        $data = Image::where('card_id', $id)->where('page', $page)->where('category_id', $cat_id)->first();
-//        if(!$data)
-//        {
-//            return response()->json(['success' => false, 'error' => 'Изображение не найдено']);
-//        }
-//        return response()->file(Storage::path('public/images/' . $data['name']));
-//    }
 
     public function imagesAll()
     {
@@ -204,3 +172,66 @@ class CardController extends Controller
         return response()->json(['success' => true]);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    public function searchImages(string $id, string $category_id)
+//    {
+//        $count = Image::where('card_id', $id)->where('category_id', $category_id)->count();
+//        $imageUrl = [];
+//        for($i = 0; $i < $count; $i++)
+//        {
+//            $imageUrl[] = 'https://kurort26-api.ru/api/cards/photo/' . $category_id . '/' . $id . '/' . $i+1;
+//        }
+//        return $imageUrl;
+//    }
+//
+//
+//    public function searchReview(string $id, string $category_id)
+//    {
+//        $reviews = Review::where('card_id', $id)->where('category_id', $category_id)->get();
+//        foreach ($reviews as $review)
+//        {
+//            $review['likes'] = Reaction::where('review_id', $review->id)->where('type', 1)->count();
+//        }
+//        foreach ($reviews as $review)
+//        {
+//            $review['dislikes'] = Reaction::where('review_id', $review->id)->where('type', 2)->count();
+//        }
+//        return $reviews;
+//    }
+
+//    public function photoCards(string $cat_id,string $id, string $page)
+//    {
+//        $data = Image::where('card_id', $id)->where('page', $page)->where('category_id', $cat_id)->first();
+//        if(!$data)
+//        {
+//            return response()->json(['success' => false, 'error' => 'Изображение не найдено']);
+//        }
+//        return response()->file(Storage::path('public/images/' . $data['name']));
+//    }
+

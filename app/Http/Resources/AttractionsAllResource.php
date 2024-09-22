@@ -22,10 +22,16 @@ class AttractionsAllResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $type = Type::find($this->type_id);
-        $type = $type['name'];
-        $city = Citie::find($this->city_id);
-        $city = $city['name'];
+        if(isset($this->type_id))
+        {
+            $type = Type::find($this->type_id);
+            $type = $type['name'];
+        }
+        if(isset($this->city_id))
+        {
+            $city = Citie::find($this->city_id);
+            $city = $city['name'];
+        }
         $reviews = Review::where('card_id', $this->id)->where('category_id', $this->category_id)->get();
         $rating = round((float) $reviews->avg('rating'), 1);
         $voted = Review::where('card_id', $this->id)->where('category_id', $this->category_id)->count();
@@ -48,7 +54,7 @@ class AttractionsAllResource extends JsonResource
             $img['likes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 1)->count();
             $img['dislikes'] = Reactionsimage::where('img_id', $img['id'])->where('type', 2)->count();
         }
-        if($this->isTop == 1)
+        if(isset($this->isTop) && $this->isTop == 1)
         {
             $isTop = true;
         }
@@ -56,7 +62,7 @@ class AttractionsAllResource extends JsonResource
         {
             $isTop = false;
         }
-        if($this->isParking == 1)
+        if(isset($this->isParking) &&$this->isParking == 1)
         {
             $isParking = true;
         }
@@ -64,11 +70,15 @@ class AttractionsAllResource extends JsonResource
         {
             $isParking = false;
         }
+//        if(isset($this->verified))
+//        {
+//            $verified = $this->removeBrackets($this->verified);
+//        }
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'type' => $type,
-            'city' => $city,
+            'type' => $type ?? null,
+            'city' => $city ?? null,
             'titleDesc' => $this->titleDesc,
             'description' => $this->description,
             'previewDescription' => $this->previewDescription,
@@ -83,7 +93,7 @@ class AttractionsAllResource extends JsonResource
             'preview' => $this->preview,
             'text' => $this->text,
             'reasonsVisit' => $this->reasonsVisit,
-            'verified' => $this->verified,
+            'verified' => $this->removeBrackets($this->verified),
             'isTop' => $isTop,
             'chooseCurort26' => $this->chooseCurort26,
             'features' => $this->features,
@@ -95,5 +105,14 @@ class AttractionsAllResource extends JsonResource
             //'imageUrl' => 'https://kurort26-api.ru/api/cards/photo/' . $this->category_id . '/' . $this->id . '/' . 1,
             'images' => $images,
         ];
+    }
+
+    private function removeBrackets($string)
+    {
+        if(isset($string))
+        {
+            return $string[0];
+        }
+        return null;
     }
 }

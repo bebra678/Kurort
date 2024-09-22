@@ -56,7 +56,6 @@ class VerificationController extends Controller
         {
             return response()->json(['success' => false, 'error' => 'Вы уже подтвердили свою почту']);
         }
-        //$verificationCode = Str::random(6);
         $verificationCode = mt_rand(100000, 999999);
         $user->verification_code = $verificationCode;
         $user->save();

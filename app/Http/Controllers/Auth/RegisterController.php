@@ -99,4 +99,18 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
         return response()->json(['success' => true, 'message' => 'Код подтверждения отправлен на вашу почту']);
     }
+
+//    public function registerSocial(Request $request)
+//    {
+//        $user = User::where('email', $request->email)->get();
+//        if($user)
+//        {
+//            $token = JWTAuth::fromUser($user);
+//            return response()->json(['user' => $user, 'access_token' => $token]);
+//        }
+//        else
+//        {
+//
+//        }
+//    }
 }

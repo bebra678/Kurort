@@ -65,3 +65,4 @@ Route::get('cards/shopings/{id}', [CardController::class, 'showShopings']);
 Route::get('cards/posters', [CardController::class, 'indexPosters']);
 Route::get('cards/posters/{id}', [CardController::class, 'showPosters']);
 
+
