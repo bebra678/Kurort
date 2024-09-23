@@ -59,13 +59,6 @@ class CardController extends Controller
         {
             return response()->json(['success' => false, 'error' => 'Такой карточки не существует']);
         }
-//        $city = Citie::find($id)->first();
-//        $data['city'] = $city['name'];
-//        $type = Type::find($id)->first();
-//        $data['type'] = $type['name'];
-//        $imageUrl = $this->searchImages($id, $data['category_id']);
-//        $reviews = $this->searchReview($id, $data['category_id']);
-        //return response()->json(['success' => true, 'card' => $data, 'imageUrl' => $imageUrl, 'reviews' => $reviews]);
         return AttractionsResource::collection($data);
     }
 
