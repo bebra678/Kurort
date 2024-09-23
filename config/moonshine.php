@@ -17,7 +17,8 @@ return [
     'logo_small' => env('MOONSHINE_LOGO_SMALL'),
 
     'route' => [
-        'domain' => env('MOONSHINE_URL', '127.0.0.1'),
+        //'domain' => env('MOONSHINE_URL', '127.0.0.1'),
+        'domain' => env('MOONSHINE_URL', 'kurort26-api.ru'),
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
         'single_page_prefix' => 'page',
         'index' => 'moonshine.index',
