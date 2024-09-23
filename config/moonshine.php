@@ -12,7 +12,7 @@ return [
     'dir' => 'app/MoonShine',
     'namespace' => 'App\MoonShine',
 
-    'title' => env('MOONSHINE_TITLE', 'MoonShine'),
+    'title' => env('MOONSHINE_TITLE', 'KMB.ADMIN'),
     'logo' => env('MOONSHINE_LOGO'),
     'logo_small' => env('MOONSHINE_LOGO_SMALL'),
 
@@ -31,7 +31,8 @@ return [
     'use_notifications' => true,
     'use_theme_switcher' => false,
 
-    'layout' => MoonShineLayout::class,
+    //'layout' => MoonShineLayout::class,
+    'layout' => App\Providers\MoonShineLayout::class,
 
     'disk' => 'moonshine_users',
 

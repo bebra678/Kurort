@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 public_html
 /mock
+/config/moonshine.php

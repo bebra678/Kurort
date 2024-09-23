@@ -64,20 +64,19 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                     static fn() => __('moonshine::ui.resource.role_title'),
                     new MoonShineUserRoleResource()
                 ),
-                MenuItem::make('Пользователи', new UsersResource()),
+                MenuItem::make('Пользователи', new UsersResource())->icon('heroicons.NewUsers'),
             ])->canSee(fn() => request()->routeIs('moonshine.*')),
             MenuGroup::make('Карточки', [
-                MenuItem::make('Города', new CitieResource()),
-                MenuItem::make('Типы', new TypeResource()),
-                MenuItem::make('Категории', new CategorieResource()),
-                MenuItem::make('Еда', new FoodResource()),
-                MenuItem::make('Достопримечательности', new AttractionResource()),
-                MenuItem::make('Сувениры и шопинг', new ShopingResource()),
-                MenuItem::make('Афиша', new PosterResource()),
-                MenuItem::make('Маршруты', new RouterResource()),
-                MenuItem::make('Точки маршрута', new RouterpointResource()),
-                MenuItem::make('Изображения', new ImageResource()),
-
+                MenuItem::make('Города', new CitieResource())->icon('heroicons.NewCity'),
+                MenuItem::make('Типы', new TypeResource())->icon('heroicons.NewType'),
+                MenuItem::make('Категории', new CategorieResource())->icon('heroicons.NewCategory'),
+                MenuItem::make('Еда', new FoodResource())->icon('heroicons.NewFood'),
+                MenuItem::make('Достопримечательности', new AttractionResource())->icon('heroicons.NewAttrac'),
+                MenuItem::make('Сувениры и шопинг', new ShopingResource())->icon('heroicons.NewShop'),
+                MenuItem::make('Афиша', new PosterResource())->icon('heroicons.NewPosters'),
+                MenuItem::make('Маршруты', new RouterResource())->icon('heroicons.NewRoutes'),
+                MenuItem::make('Точки маршрута', new RouterpointResource())->icon('heroicons.NewRouterPoints'),
+                MenuItem::make('Изображения', new ImageResource())->icon('heroicons.NewImage'),
             ]),
 
 //            MenuItem::make('Documentation', 'https://moonshine-laravel.com/docs')
