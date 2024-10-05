@@ -15,10 +15,11 @@ return [
     'title' => env('MOONSHINE_TITLE', 'KMB.ADMIN'),
     'logo' => env('MOONSHINE_LOGO'),
     'logo_small' => env('MOONSHINE_LOGO_SMALL'),
+    'dark' => env('MOONSHINE_DARK_MODE', true),
 
     'route' => [
-        //'domain' => env('MOONSHINE_URL', '127.0.0.1'),
-        'domain' => env('MOONSHINE_URL', 'kurort26-api.ru'),
+        'domain' => env('MOONSHINE_URL', '127.0.0.1'),
+        //'domain' => env('MOONSHINE_URL', 'kurort26-api.ru'),
         'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
         'single_page_prefix' => 'page',
         'index' => 'moonshine.index',

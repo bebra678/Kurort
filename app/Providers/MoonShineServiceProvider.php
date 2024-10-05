@@ -10,6 +10,7 @@ use App\MoonShine\Resources\CitieResource;
 use App\MoonShine\Resources\FoodResource;
 use App\MoonShine\Resources\ImageResource;
 use App\MoonShine\Resources\PosterResource;
+use App\MoonShine\Resources\ReviewResource;
 use App\MoonShine\Resources\RouterpointResource;
 use App\MoonShine\Resources\RouterResource;
 use App\MoonShine\Resources\ShopingResource;
@@ -77,6 +78,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                 MenuItem::make('Маршруты', new RouterResource())->icon('heroicons.NewRoutes'),
                 MenuItem::make('Точки маршрута', new RouterpointResource())->icon('heroicons.NewRouterPoints'),
                 MenuItem::make('Изображения', new ImageResource())->icon('heroicons.NewImage'),
+                MenuItem::make('Отзывы', new ReviewResource())->icon('heroicons.star'),
             ]),
 
 //            MenuItem::make('Documentation', 'https://moonshine-laravel.com/docs')

@@ -34,7 +34,7 @@ class UsersResource extends ModelResource
 
     protected string $title = 'Пользователи';
 
-    protected string $column = 'id';
+    protected string $column = 'name';
 
     protected bool $createInModal = false;
 //
