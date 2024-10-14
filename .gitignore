@@ -17,6 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-public_html
 /mock
 /config/moonshine.php
