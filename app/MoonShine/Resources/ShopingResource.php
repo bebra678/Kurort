@@ -411,7 +411,7 @@ class ShopingResource extends ModelResource
             'percent' => 'nullable|integer',
             'preview' => 'nullable|string|max:255',
             'text' => 'nullable|string|max:255',
-            'address' => 'required|string|max:255',
+            'address' => 'nullable|string|max:255',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'phone' => 'nullable|string|max:255',

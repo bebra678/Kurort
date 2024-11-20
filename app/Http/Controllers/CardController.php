@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AsdRequest;
-use App\Http\Requests\ParsRequest;
 use App\Http\Requests\ReactionImageRequest;
 use App\Http\Requests\ReactionRequest;
 use App\Http\Resources\AttractionsAllResource;
@@ -15,6 +14,7 @@ use App\Http\Resources\PostersResource;
 use App\Http\Resources\RoutersAllResource;
 use App\Http\Resources\RoutersResource;
 use App\Http\Resources\ShopingResource;
+use App\Http\Resources\ShopingsAllResource;
 use App\Models\Allimage;
 use App\Models\Attraction;
 use App\Models\Card;
@@ -27,7 +27,6 @@ use App\Models\Review;
 use App\Models\Router;
 use App\Models\Routerpoint;
 use App\Models\Shoping;
-use App\Models\Test;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -97,7 +96,7 @@ class CardController extends Controller
     public function indexShopings()
     {
         $data = Shoping::all();
-        return AttractionsAllResource::collection($data);
+        return ShopingsAllResource::collection($data);
     }
 
     public function showShopings(string $id)

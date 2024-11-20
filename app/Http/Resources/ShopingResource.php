@@ -98,7 +98,7 @@ class ShopingResource extends JsonResource
             'preview' => $this->preview,
             'text' => $this->text,
             'reasonsVisit' => $this->reasonsVisit,
-            'verified' => $this->removeBrackets($this->verified),
+            //'verified' => $this->removeBrackets($this->verified),
             'isTop' => $isTop,
             'chooseCurort26' => $this->chooseCurort26,
             'features' => $this->features,
