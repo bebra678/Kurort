@@ -24,3 +24,4 @@ public_html
 public
 /public/
 /public/images/
+/config/filesystems.php
