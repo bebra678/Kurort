@@ -21,3 +21,5 @@ public_html
 /mock
 /config/moonshine.php
 /public
+public
+/public/
